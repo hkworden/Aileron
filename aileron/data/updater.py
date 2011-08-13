@@ -1,8 +1,7 @@
 from datetime import datetime
 from xml.dom.minidom import parseString
 
-from model.equipment import Equipment, EquipmentType
-from model.outage import Outage
+from model.outage import EquipmentType, Outage
 from model.station import Station, StationName
 
 class Updater:
@@ -64,10 +63,17 @@ class Updater:
       if reason == None:
         # TODO
         continue
-      equipment = self.get_equipment(equipment_id, equipment_type, \
-          station_name, trains, serving, is_ada)
-      outage = Outage(equipment = equipment, reason = reason, \
-          start_date = start_date, est_end_date = est_end_date)
+      station = self.get_station(station_name, trains)
+      if station == None:
+        outage = Outage(equipment_id = equipment_id, \
+            equipment_type = equipment_type, equipment_serving = serving, \
+            equipment_is_ada = is_ada, reason = reason, \
+            start_date = start_date, est_end_date = est_end_date)
+      else:
+        outage = Outage(station = station, equipment_id = equipment_id, \
+            equipment_type = equipment_type, equipment_serving = serving, \
+            equipment_is_ada = is_ada, reason = reason, \
+            start_date = start_date, est_end_date = est_end_date)
       outage.put()
     now = datetime.now()
     for outage in self.existing_outages:
@@ -82,32 +88,6 @@ class Updater:
     outage_list = q.fetch(count)
     for outage in outage_list:
       self.existing_outages[outage.equipment.mta_id] = outage
-  
-  def get_equipment(self, equipment_id, equipment_type, station_name, \
-      train_list, serving, is_ada):
-    # trying to find equipment by the given ID
-    # TODO what if IDs aren't unique, or are re-used?
-    q = Equipment.all()
-    q.filter('mta_id = ', equipment_id)
-    count = q.count()
-    if count == 1:
-      return q.get()
-    elif count > 1:
-      # TODO: this is a problem
-      return None
-    station = self.get_station(station_name, train_list)
-    if station == None:
-      self.write('no station found for: %s\n' % (station_name))
-    else:
-      self.write('found %s\n' % (station.display_name))
-    if station == None:
-      equipment = Equipment(mta_id = equipment_id, \
-          equipment_type = equipment_type, serving = serving, is_ada = is_ada)
-    else:
-      equipment = Equipment(station = station, mta_id = equipment_id, \
-          equipment_type = equipment_type, serving = serving, is_ada = is_ada)
-    equipment.put()
-    return equipment
   
   def get_station(self, station_name, train_list):
     q = StationName.all()
