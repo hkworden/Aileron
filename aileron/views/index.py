@@ -4,32 +4,24 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from data.model.station import Station
+from views.page import Page
 
-class IndexPage(webapp.RequestHandler):
-  
-  HTML_HEADER = (
-      '</html>'
-      '<head>'
-      '<title>Aileron</title>'
-      '<link rel="stylesheet" type="text/css" href="css/chosen.css"/>'
-      '<script src="js/jquery.min.js" type="text/javascript"></script>'
-      '<script src="js/chosen.jquery.min.js" type="text/javascript"></script>'
-      '<script src="js/main.js" type="text/javascript"></script>'
-      '</head>'
-      '<body onload="main();">'
-      )
-  
-  HTML_FOOTER = (
-      '</body>'
-      '</html>'
-      )
+class IndexPage(Page):
   
   def get(self):
     self.response.headers['Content-Type'] = 'text/html'
     write = self.response.out.write
-    write(IndexPage.HTML_HEADER)
+    self.write_header()
     self.write_station_options(write)
-    write(IndexPage.HTML_FOOTER)
+    self.write_footer()
+  
+  def write_header(self):
+    css_files = ['css/chosen.css']
+    js_files = ['js/jquery.min.js', 'js/chosen.jquery.min.js', 'js/index.js']
+    self.print_page_header('Aileron', css_files, js_files, 'main();')
+  
+  def write_footer(self):
+    self.print_page_footer()
   
   def write_station_options(self, write):
     write('<select class="chzn-select" style="width:350px;">')
