@@ -6,6 +6,8 @@ api_version: 1
 handlers:
 - url: /?
   script: views/index.py
+- url: /s/(.*)
+  script: views/info/station.py
 - url: /css
   static_dir: static/css
 - url: /img
