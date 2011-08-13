@@ -6,3 +6,5 @@ api_version: 1
 handlers:
 - url: /?
   script: views/index.py
+- url: /_admin/load/?
+  script: views/admin/load.py
