@@ -8,3 +8,5 @@ handlers:
   script: views/index.py
 - url: /_admin/load/?
   script: views/admin/load.py
+- url: /_admin/update/?
+  script: views/admin/update.py
