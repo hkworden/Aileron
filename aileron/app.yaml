@@ -6,6 +6,12 @@ api_version: 1
 handlers:
 - url: /?
   script: views/index.py
+- url: /css
+  static_dir: static/css
+- url: /img
+  static_dir: static/img
+- url: /js
+  static_dir: static/js
 - url: /_admin/load/?
   script: views/admin/load.py
 - url: /_admin/update/?
