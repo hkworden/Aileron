@@ -87,7 +87,7 @@ class Updater:
     count = q.count()
     outage_list = q.fetch(count)
     for outage in outage_list:
-      self.existing_outages[outage.equipment.mta_id] = outage
+      self.existing_outages[outage.equipment_id] = outage
   
   def get_station(self, station_name, train_list):
     q = StationName.all()
