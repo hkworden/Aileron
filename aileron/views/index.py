@@ -28,7 +28,8 @@ class IndexPage(Page):
     q = Station.all()
     q.order('display_name')
     for station in q:
-      write('<option>%s (%s)</option>' % (station.display_name, \
+      write('<option data-link="/s/%s">%s (%s)</option>' % \
+          (station.key().id(), station.display_name, \
           string.join(station.trains, '/')))
     write('</select>')
 
