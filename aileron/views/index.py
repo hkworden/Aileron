@@ -24,9 +24,11 @@ class IndexPage(Page):
     self.print_page_footer()
   
   def write_station_options(self, write):
-    write('<select class="chzn-select" style="width:350px;">')
+    write('<select data-placeholder="Select a station..." class="chzn-select" '
+        'style="width:350px;">')
     q = Station.all()
     q.order('display_name')
+    write('<option></option>')
     for station in q:
       write('<option data-link="/s/%s">%s (%s)</option>' % \
           (station.key().id(), station.display_name, \
