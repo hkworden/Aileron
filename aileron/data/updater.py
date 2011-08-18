@@ -76,7 +76,8 @@ class Updater:
             start_date = start_date, est_end_date = est_end_date)
       outage.put()
     now = datetime.now()
-    for outage in self.existing_outages:
+    for outage_id in self.existing_outages:
+      outage = self.existing_outages[outage_id]
       outage.end_date = now
       outage.put()
   
