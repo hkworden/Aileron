@@ -12,11 +12,12 @@ class IndexPage(Page):
     self.response.headers['Content-Type'] = 'text/html'
     write = self.response.out.write
     self.write_header()
+    write('<h1>Aileron</h1>')
     self.write_station_options(write)
     self.write_footer()
   
   def write_header(self):
-    css_files = ['css/chosen.css']
+    css_files = ['css/index.css', 'css/chosen.css']
     js_files = ['js/jquery.min.js', 'js/chosen.jquery.min.js', 'js/index.js']
     self.print_page_header('Aileron', css_files, js_files, 'main();')
   
@@ -25,7 +26,7 @@ class IndexPage(Page):
   
   def write_station_options(self, write):
     write('<select data-placeholder="Select a station..." class="chzn-select" '
-        'style="width:350px;">')
+        'id="station-select" style="width:350px;">')
     q = Station.all()
     q.order('display_name')
     write('<option></option>')

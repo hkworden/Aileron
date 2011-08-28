@@ -19,6 +19,7 @@ class Page(webapp.RequestHandler):
   
   def print_page_header(self, title, css_files = [], js_files = [], \
         onload=None):
+    css_files.append('css/style.css')
     css_links = []
     for css_file in css_files:
       css_links.append('<link rel="stylesheet" text="text/css" href="%s"/>' % \
